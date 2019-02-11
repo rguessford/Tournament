@@ -35,34 +35,32 @@ public class MovementSystem extends BaseEntitySystem {
                 positionComponent.y += transformComponent.y;
             } else if (playerControlComponentMapper.has(ids[i])){
                 PlayerControlComponent pcc = playerControlComponentMapper.get(ids[i]);
-                log.debug("up:" + pcc.up + " down:" + pcc.down + " left:" + pcc.left + " right:" + pcc.right);
-                log.debug(positionComponent.x +","+ positionComponent.y);
                 if (pcc.up){
                     if(pcc.left || pcc.right){
-                        positionComponent.y += 7.07f;
+                        positionComponent.y += 1f;
                     } else {
-                        positionComponent.y += 10;
+                        positionComponent.y += 1;
                     }
                 }
                 if (pcc.left){
                     if(pcc.up || pcc.down){
-                        positionComponent.x -= 7.07f;
+                        positionComponent.x -= 1f;
                     } else {
-                        positionComponent.x -= 10;
+                        positionComponent.x -= 1;
                     }
                 }
                 if (pcc.down){
                     if(pcc.left || pcc.right){
-                        positionComponent.y -= 7.07f;
+                        positionComponent.y -= 1f;
                     } else {
-                        positionComponent.y -= 10;
+                        positionComponent.y -= 1;
                     }
                 }
                 if (pcc.right){
                     if(pcc.up || pcc.down){
-                        positionComponent.x += 7.07f;
+                        positionComponent.x += 1f;
                     } else {
-                        positionComponent.x += 10;
+                        positionComponent.x += 1;
                     }
                 }
             }
