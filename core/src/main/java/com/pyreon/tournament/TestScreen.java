@@ -1,7 +1,10 @@
 package com.pyreon.tournament;
 
 import com.artemis.ComponentMapper;
+import com.artemis.WorldConfiguration;
+import com.artemis.WorldConfigurationBuilder;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -9,13 +12,22 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.pyreon.components.*;
+import com.pyreon.systems.InputSystem;
+import com.pyreon.systems.MovementSystem;
+import com.pyreon.systems.PhysicsSyncSystem;
+import com.pyreon.systems.SpriteBatchDrawSystem;
 
 
 public class TestScreen implements Screen {
     final Tournament game;
     OrthographicCamera camera;
+
+    public com.artemis.World entityWorld;
+    public com.badlogic.gdx.physics.box2d.World physicsWorld;
 
     int testEntity;
     private ComponentMapper<PositionComponent> positionComponentMapper;
@@ -30,23 +42,54 @@ public class TestScreen implements Screen {
 
     Array<TextureAtlas.AtlasRegion> lightEffect;
     Sprite testSprite;
+    ScreenViewport screenViewport;
+
+    Stage stage;
 
     public TestScreen(final Tournament tournament) {
         this.game = tournament;
+        Box2D.init();
+
+        // setting up camera, viewport, stage
         camera = new OrthographicCamera(CAMERA_WIDTH,CAMERA_HEIGHT);
         camera.position.set(camera.viewportWidth / 2f, camera.viewportHeight / 2f, 0);
+
+        screenViewport = new ScreenViewport(camera);
+        screenViewport.setUnitsPerPixel(1/32f);
+
+        stage = new Stage(screenViewport, game.batch);
+
+        // setting up input handling
+        InputSystem inputSystem = new InputSystem(); // key press commands
+        InputMultiplexer inputMultiplexer = new InputMultiplexer();
+
+        inputMultiplexer.addProcessor(stage);
+        inputMultiplexer.addProcessor(inputSystem);
+
+        Gdx.input.setInputProcessor(inputMultiplexer);
+
+        // init artemis and box2d worlds
+        WorldConfiguration config = new WorldConfigurationBuilder()
+                .with(new PhysicsSyncSystem(),
+                        inputSystem,
+                        new MovementSystem(),
+                        new SpriteBatchDrawSystem(game))
+                .build();
+        entityWorld = new com.artemis.World(config);
+        physicsWorld = new com.badlogic.gdx.physics.box2d.World(new Vector2(0, -10f), true);
+
         testSprite = game.atlas.createSprite("Effects/magic/LightEffect1", 1);
-        positionComponentMapper = game.entityWorld.getMapper(PositionComponent.class);
-        textureComponentMapper = game.entityWorld.getMapper(TextureComponent.class);
-        playerControlComponentMapper = game.entityWorld.getMapper(PlayerControlComponent.class);
-        spriteComponentMapper = game.entityWorld.getMapper(SpriteComponent.class);
-        physicsBodyComponentMapper = game.entityWorld.getMapper(PhysicsBodyComponent.class);
+        positionComponentMapper = entityWorld.getMapper(PositionComponent.class);
+        textureComponentMapper = entityWorld.getMapper(TextureComponent.class);
+        playerControlComponentMapper = entityWorld.getMapper(PlayerControlComponent.class);
+        spriteComponentMapper = entityWorld.getMapper(SpriteComponent.class);
+        physicsBodyComponentMapper = entityWorld.getMapper(PhysicsBodyComponent.class);
         lightEffect = game.atlas.findRegions("Effects/magic/LightEffect1");
     }
 
     @Override
     public void show() {
-        testEntity = game.entityWorld.create();
+        testEntity = entityWorld.create();
         PositionComponent pc = positionComponentMapper.create(testEntity);
         pc.x = 12;
         pc.y = 15;
@@ -65,7 +108,7 @@ public class TestScreen implements Screen {
 // Set our body's starting position in the world
         bodyDef.position.set(12, 15);
 
-        Body body = game.physicsWorld.createBody(bodyDef);
+        Body body = physicsWorld.createBody(bodyDef);
 
         CircleShape circle = new CircleShape();
         circle.setRadius(1f);
@@ -91,7 +134,7 @@ public class TestScreen implements Screen {
         groundBodyDef.position.set(new Vector2(12.5f, 0));
 
 // Create a body from the defintion and add it to the world
-        Body groundBody = game.physicsWorld.createBody(groundBodyDef);
+        Body groundBody = physicsWorld.createBody(groundBodyDef);
 
 // Create a polygon shape
         PolygonShape groundBox = new PolygonShape();
@@ -107,14 +150,18 @@ public class TestScreen implements Screen {
 
     @Override
     public void render(float delta){
-        game.entityWorld.setDelta(delta);
+        entityWorld.setDelta(delta);
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        game.entityWorld.process();
-        debugRenderer.render(game.physicsWorld, camera.combined);
-        game.physicsWorld.step(1/60f, 6, 2);
+        entityWorld.process();
+
+        stage.act(delta);
+        stage.draw();
+
+        debugRenderer.render(physicsWorld, camera.combined);
+        physicsWorld.step(1/60f, 6, 2);
     }
 
     @Override

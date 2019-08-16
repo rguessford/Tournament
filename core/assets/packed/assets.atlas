@@ -1,0 +1,194 @@
+
+assets.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+badlogic
+  rotate: false
+  xy: 2, 2
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+
+assets2.png
+size: 1024,1024
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Effects/magic/LightEffect1
+  rotate: false
+  xy: 2, 762
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+Effects/magic/LightEffect1
+  rotate: false
+  xy: 2, 610
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+Effects/magic/LightEffect1
+  rotate: false
+  xy: 154, 762
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+Effects/magic/LightEffect1
+  rotate: false
+  xy: 2, 458
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 4
+Effects/magic/LightEffect1
+  rotate: false
+  xy: 154, 610
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 5
+Effects/magic/LightEffect2
+  rotate: false
+  xy: 306, 762
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+Effects/magic/LightEffect2
+  rotate: false
+  xy: 2, 306
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+Effects/magic/LightEffect2
+  rotate: false
+  xy: 154, 458
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+Effects/magic/LightEffect2
+  rotate: false
+  xy: 306, 610
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 4
+Effects/magic/LightEffect2
+  rotate: false
+  xy: 458, 762
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 5
+Effects/magic/LightEffect3
+  rotate: false
+  xy: 2, 154
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+Effects/magic/LightEffect3
+  rotate: false
+  xy: 154, 306
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+Effects/magic/LightEffect3
+  rotate: false
+  xy: 306, 458
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+Effects/magic/LightEffect3
+  rotate: false
+  xy: 458, 610
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 4
+Effects/magic/LightEffect3
+  rotate: false
+  xy: 610, 762
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 5
+Effects/magic/LightEffect4
+  rotate: false
+  xy: 2, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+Effects/magic/LightEffect4
+  rotate: false
+  xy: 154, 154
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+Effects/magic/LightEffect4
+  rotate: false
+  xy: 306, 306
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+Effects/magic/LightEffect4
+  rotate: false
+  xy: 458, 458
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 4
+Effects/magic/LightEffect4
+  rotate: false
+  xy: 610, 610
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 5
+Effects/magic/LightEffect5
+  rotate: false
+  xy: 762, 762
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 1
+Effects/magic/LightEffect5
+  rotate: false
+  xy: 154, 2
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 2
+Effects/magic/LightEffect5
+  rotate: false
+  xy: 306, 154
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 3
+Effects/magic/LightEffect5
+  rotate: false
+  xy: 458, 306
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 4
+Effects/magic/LightEffect5
+  rotate: false
+  xy: 610, 458
+  size: 150, 150
+  orig: 150, 150
+  offset: 0, 0
+  index: 5
