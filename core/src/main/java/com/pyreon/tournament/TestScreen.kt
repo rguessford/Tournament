@@ -13,7 +13,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.*
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
+import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.utils.Array
 import com.badlogic.gdx.utils.viewport.ScreenViewport
 import com.pyreon.components.*
@@ -57,7 +59,7 @@ class TestScreen(internal val game: Tournament) : Screen {
         screenViewport = ScreenViewport(camera)
         screenViewport.unitsPerPixel = 1 / 32f
 
-        stage = Stage(screenViewport, game.batch)
+        stage = Stage(ScreenViewport(), game.batch)
 
         // setting up input handling
         val inputSystem = InputSystem() // key press commands
@@ -68,21 +70,16 @@ class TestScreen(internal val game: Tournament) : Screen {
 
         Gdx.input.inputProcessor = inputMultiplexer
 
-        //UI??
-        table = Table()
-        table.setFillParent(true)
-        stage.addActor(table)
-
-
         // init artemis and box2d worlds
+        physicsWorld = com.badlogic.gdx.physics.box2d.World(Vector2(0f, -10f), true)
         val config = WorldConfigurationBuilder()
                 .with(PhysicsSyncSystem(),
                         inputSystem,
                         MovementSystem(),
-                        SpriteBatchDrawSystem(game))
+                        SpriteBatchDrawSystem(game, stage))
                 .build()
         entityWorld = com.artemis.World(config)
-        physicsWorld = com.badlogic.gdx.physics.box2d.World(Vector2(0f, 0f), true)
+
 
         testSprite = game.atlas.createSprite("Effects/magic/LightEffect1", 1)
         positionComponentMapper = entityWorld.getMapper(PositionComponent::class.java)
@@ -91,6 +88,24 @@ class TestScreen(internal val game: Tournament) : Screen {
         spriteComponentMapper = entityWorld.getMapper(SpriteComponent::class.java)
         physicsBodyComponentMapper = entityWorld.getMapper(PhysicsBodyComponent::class.java)
         lightEffect = game.atlas.findRegions("Effects/magic/LightEffect1")
+
+        //UI
+        val nameLabel = Label("Name:", game.uiSkin)
+        val nameText = TextField("", game.uiSkin)
+        val addressLabel = Label("Address:", game.uiSkin)
+        val addressText = TextField("", game.uiSkin)
+
+        table = Table()
+        table.setFillParent(true)
+
+        table.setDebug(true)
+
+        stage.addActor(table)
+        table.add(nameLabel)
+        table.add(nameText).width(300f)
+        table.row()
+        table.add(addressLabel)
+        table.add(addressText).width(300f)
     }
 
     override fun show() {
@@ -185,6 +200,6 @@ class TestScreen(internal val game: Tournament) : Screen {
     }
 
     override fun dispose() {
-        stage.dispose();
+        stage.dispose()
     }
 }

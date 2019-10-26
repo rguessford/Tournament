@@ -6,6 +6,7 @@ import com.artemis.ComponentMapper
 import com.artemis.systems.IteratingSystem
 import com.artemis.utils.IntBag
 import com.badlogic.gdx.graphics.g2d.Sprite
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.pyreon.components.PositionComponent
 import com.pyreon.components.SpriteComponent
 import com.pyreon.components.TextureComponent
@@ -13,7 +14,7 @@ import com.pyreon.tournament.Tournament
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
 
-class SpriteBatchDrawSystem(internal var game: Tournament) : IteratingSystem(Aspect.all(PositionComponent::class.java).one(SpriteComponent::class.java, TextureComponent::class.java)) {
+class SpriteBatchDrawSystem(internal var game: Tournament, internal var stage: Stage) : IteratingSystem(Aspect.all(PositionComponent::class.java).one(SpriteComponent::class.java, TextureComponent::class.java)) {
 
     internal var pm: ComponentMapper<PositionComponent>? = null
     internal var sm: ComponentMapper<SpriteComponent>? = null
@@ -31,10 +32,14 @@ class SpriteBatchDrawSystem(internal var game: Tournament) : IteratingSystem(Asp
         } else if (tm!!.has(entityId)) {
             game.batch.draw(tm!!.get(entityId).texture, position.x, position.y)
         }
+
     }
 
     override fun end(){
         game.batch.end()
+
+        stage.act()
+        stage.draw()
     }
 
     companion object {
