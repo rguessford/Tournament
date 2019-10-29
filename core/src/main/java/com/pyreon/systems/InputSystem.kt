@@ -3,7 +3,6 @@ package com.pyreon.systems
 import com.artemis.Aspect
 import com.artemis.BaseEntitySystem
 import com.artemis.ComponentMapper
-import com.artemis.utils.IntBag
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 import com.pyreon.components.PlayerControlComponent

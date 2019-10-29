@@ -1,7 +1,6 @@
 package com.pyreon.tournament
 
 import com.artemis.ComponentMapper
-import com.artemis.WorldConfiguration
 import com.artemis.WorldConfigurationBuilder
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
@@ -30,8 +29,6 @@ class TestScreen(internal val game: Tournament) : Screen {
 
     var entityWorld: com.artemis.World
     var physicsWorld: com.badlogic.gdx.physics.box2d.World
-
-    internal var testEntity: Int = 0
     private val positionComponentMapper: ComponentMapper<PositionComponent>
     private val textureComponentMapper: ComponentMapper<TextureComponent>
     private val playerControlComponentMapper: ComponentMapper<PlayerControlComponent>
@@ -71,7 +68,7 @@ class TestScreen(internal val game: Tournament) : Screen {
         Gdx.input.inputProcessor = inputMultiplexer
 
         // init artemis and box2d worlds
-        physicsWorld = com.badlogic.gdx.physics.box2d.World(Vector2(0f, -10f), true)
+        physicsWorld = com.badlogic.gdx.physics.box2d.World(Vector2(0f, 0f), true)
         val config = WorldConfigurationBuilder()
                 .with(PhysicsSyncSystem(),
                         inputSystem,
@@ -79,7 +76,6 @@ class TestScreen(internal val game: Tournament) : Screen {
                         SpriteBatchDrawSystem(game, stage))
                 .build()
         entityWorld = com.artemis.World(config)
-
 
         testSprite = game.atlas.createSprite("Effects/magic/LightEffect1", 1)
         positionComponentMapper = entityWorld.getMapper(PositionComponent::class.java)
@@ -109,44 +105,7 @@ class TestScreen(internal val game: Tournament) : Screen {
     }
 
     override fun show() {
-        testEntity = entityWorld.create()
-        val pc = positionComponentMapper.create(testEntity)
-        pc.x = 12f
-        pc.y = 15f
-        val sc = spriteComponentMapper.create(testEntity)
-        sc.sprite = game.atlas.createSprite("Effects/magic/LightEffect1", 3)
-        sc.sprite!!.setSize(4f, 4f)
-
-        sc.sprite!!.setOriginCenter()
-        sc.sprite!!.setOriginBasedPosition(-1.5f, -1.5f)
-        playerControlComponentMapper.create(testEntity)
-
-        // First we create a body definition
-        val bodyDef = BodyDef()
-        // We set our body to dynamic, for something like ground which doesn't move we would set it to StaticBody
-        bodyDef.type = BodyDef.BodyType.DynamicBody
-        // Set our body's starting position in the world
-        bodyDef.position.set(12f, 15f)
-
-        val body = physicsWorld.createBody(bodyDef)
-
-        val circle = CircleShape()
-        circle.radius = 3f
-
-        // Create a fixture definition to apply our shape to
-        val fixtureDef = FixtureDef()
-        fixtureDef.shape = circle
-        fixtureDef.density = 0.5f
-        fixtureDef.friction = 0.4f
-        fixtureDef.restitution = 0.6f // Make it bounce a little bit
-
-        // Create our fixture and attach it to the body
-        body.createFixture(fixtureDef)
-        val pbc = physicsBodyComponentMapper.create(testEntity)
-        pbc.body = body
-        // Remember to dispose of any shapes after you're done with them!
-        // BodyDef and FixtureDef don't need disposing, but shapes do.
-        circle.dispose()
+        generateTestPlayer(game, entityWorld, physicsWorld)
 
         // Create our body definition
         val groundBodyDef = BodyDef()
