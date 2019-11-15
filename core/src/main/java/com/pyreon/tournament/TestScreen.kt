@@ -73,6 +73,7 @@ class TestScreen(internal val game: Tournament) : Screen {
                 .with(PhysicsSyncSystem(),
                         inputSystem,
                         MovementSystem(),
+                        //UISystem(),
                         SpriteBatchDrawSystem(game, stage))
                 .build()
         entityWorld = com.artemis.World(config)

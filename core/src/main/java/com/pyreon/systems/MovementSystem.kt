@@ -55,7 +55,7 @@ class MovementSystem : IteratingSystem(Aspect.all(PositionComponent::class.java)
                     physicsBodyComponent.body!!.applyLinearImpulse(1f* SPEED,0f* SPEED,positionComponent.x,positionComponent.y,true)
                 }
             }
-
+            //if you're moving, turn to face the direction you're moving in
             if(physicsBodyComponent.body!!.linearVelocity.len() >= 0.1f){
                 val facing = physicsBodyComponent.body!!.angle
                 val facingLookahead = facing + physicsBodyComponent.body!!.angularVelocity / 30
